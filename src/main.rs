@@ -1,4 +1,3 @@
-use std::io::{self, Write};
 use std::process;
 mod cli;
 
@@ -61,31 +60,13 @@ fn intro() -> String {
 
 fn main() {
     let current_db = intro();
-    let tables = get_tables("./data/test_db.db/_structure.json");
+    let tables = get_tables(&format!("./data/{}/_structure.json", current_db));
+    // TODO: read all geoJson files and convert them into 1 big r-tree
+
     cli::print_tables(tables);
     // 4. read db from the disk and pass it is a reference 
 
     // 5. go into query processing mode until exit
+    cli::handle_queries();
 
-    loop {
-        let mut input = String::new(); // create a mutable string to store our input
-
-
-        print!("Please enter a query (or type 'exit' to quit): ");
-        io::stdout().flush().unwrap(); // print prompt and flush it to stdout
-    
-        io::stdin()
-            .read_line(&mut input)
-            .expect("Failed to read line"); // read a line from stdin
-    
-        let input = input.trim(); // remove trailing newline
-
-        if input == "exit" {
-            break;
-        }
-
-        println!("Processing query: {}", input);
-
-        // Add the logic to process the input query here
-    }
 }
