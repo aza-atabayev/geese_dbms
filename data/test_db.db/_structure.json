@@ -1,0 +1,20 @@
+{
+    "tables": [
+      {
+        "name": "a",
+        "fields": [
+          {"name": "id", "type": "integer"},
+          {"name": "name", "type": "string"},
+          {"name": "geometry", "type": "geojson"}
+        ]
+      },
+      {
+        "name": "b",
+        "fields": [
+            {"name": "id", "type": "integer"},
+            {"name": "name", "type": "string"},
+            {"name": "geometry", "type": "geojson"}
+        ]
+      }
+    ]
+  }

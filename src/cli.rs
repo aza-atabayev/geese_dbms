@@ -1,6 +1,7 @@
 use std::fs;
 
 use crate::utils::cmd_io::read_input;
+use crate::utils::json::{Database, Table, Field};
 
 pub fn print_intro() {
     println!();
@@ -22,5 +23,24 @@ pub fn handle_db_creation() {
     let db_name = read_input();
     if let Err(err) = fs::create_dir(format!("./data/{}.db", db_name)) {
         eprintln!("Error creating database: {}", err);
+    }
+}
+
+pub fn print_tables(db: Option<Database>) {
+    match db {
+        Some(db) => {
+            if db.tables.is_empty() {
+                println!("No tables are found in the database.");
+            } else {
+                for table in db.tables {
+                    println!("Table: {}", table.name);
+                    for field in table.fields {
+                        println!("    Field: {}, Type: {}", field.name, field.field_type);                       
+                    }
+                    println!();
+                }
+            }
+        }
+        None => println!("_structure.json is empty, no tables to fetch."),
     }
 }

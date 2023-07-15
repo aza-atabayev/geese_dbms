@@ -2,12 +2,12 @@ use std::io::{self, Write};
 use std::process;
 mod cli;
 
-mod utils{
-    pub mod cmd_io;
-    pub mod directory;
-}
+mod utils;
+use crate::utils::json::get_tables;
 
-fn intro() {
+
+
+fn intro() -> String {
     cli::print_intro();
 
     let db_names = utils::directory::get_file_names("./data/");
@@ -33,7 +33,7 @@ fn intro() {
         }   
         "create" => {
             cli::handle_db_creation();
-            intro(); 
+            intro()
         }
         _ => {
             let choice = input.parse::<usize>();
@@ -43,13 +43,15 @@ fn intro() {
                         let selected_database = &db_names[database_num - 1];
                         // Code for accessing the selected database goes here
                         println!("Accessing database '{}'", selected_database);
+                        selected_database.to_string()
                     } else {
                         println!("Invalid database number.");
+                        intro()
                     }
                 }
                 Err(_) => {
                     println!("Invalid input.");
-                    intro();
+                    intro()
                 }
             }
         }
@@ -58,13 +60,12 @@ fn intro() {
     
 
 fn main() {
-    intro();
-    
-    // 3. current_db = something and show that they can use "disconnect" to disconnect
-
+    let current_db = intro();
+    let tables = get_tables("./data/test_db.db/_structure.json");
+    cli::print_tables(tables);
     // 4. read db from the disk and pass it is a reference 
 
-    // 5. go into query processing mode until "disconnect"
+    // 5. go into query processing mode until exit
 
     loop {
         let mut input = String::new(); // create a mutable string to store our input
